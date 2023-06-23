@@ -1,0 +1,20 @@
+.table-container{
+    margin-top: 100px;
+}
+
+.btnedit{
+    margin-right: 4px;
+   
+}
+
+.addbtn{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+   
+}
+
+::ng-deep p-toast {
+    margin-top: 150px;
+  }
+  

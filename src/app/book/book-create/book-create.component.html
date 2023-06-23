@@ -1,0 +1,79 @@
+
+ <p-toast position="bottom-center" key="bc"></p-toast>
+ 
+<div class="col-12 main-container">
+  <div class="card">
+    <div>
+      <h1 class="book-title mt-4"> Add/Edit Book Details</h1>
+     
+    </div>
+    <form [formGroup]="bookForm">
+      <div class="name-container  p-fluid">
+        
+
+        <div class="col-6 mt-3">
+          <div class=" flex flex col md:col-4 me-3 mb-4 ">
+            <label htmlFor="title">Title</label>
+            <input type="text" pInputText formControlName="title" [ngClass]="{
+              'ng-invalid ng-dirty': submitted && f['title'].errors}"/>
+              <div *ngIf="submitted && f['title'].errors" class="error-message">
+                Title is required and should not exceed 30 characters.
+              </div>
+          </div>
+
+          <div class="gap-2 flex col md:col-4 me-3">
+            <label htmlFor="description">Description</label>
+            <textarea rows="5" cols="30" pInputTextarea formControlName="description" [ngClass]="{
+              'ng-invalid ng-dirty': submitted && f['description'].errors}"></textarea>
+              <div *ngIf="submitted && f['description'].errors" class="error-message">
+                Description is required and should not exceed 50 characters.
+              </div>
+          </div>
+        </div>
+        <div class="col-6 mt-3">
+
+          <div class=" flex col md:col-4 ">
+            <label for="pageCount">Page Count</label>
+            <p-inputNumber inputId="pageCount" formControlName="pageCount" [ngClass]="{
+              'ng-invalid ng-dirty': submitted && f['pageCount'].errors}"> </p-inputNumber>
+              <div *ngIf="submitted && f['pageCount'].errors" class="error-message">
+                Page Count is required and should be between 10 and 250.
+              </div>
+          </div>
+
+          <div class=" flex flex col md:col-4  mt-4">
+            <label htmlFor="excerpt">Excerpt</label>
+            <input type="text" pInputText formControlName="excerpt" [ngClass]="{
+              'ng-invalid ng-dirty': submitted && f['excerpt'].errors}"/>
+              <div *ngIf="submitted && f['excerpt'].errors" class="error-message">
+                Excerpt should not exceed 250 characters.
+              </div>
+          </div>
+
+          <div class=" flex flex col md:col-4  mt-4 ">
+            <label htmlFor="publishDate">Publish Date</label>
+            <p-calendar formControlName="publishDate" [ngClass]="{
+              'ng-invalid ng-dirty': submitted && f['publishDate'].errors
+            }" dateFormat="yy-mm-dd'T'HH:MM:ss.l'Z'"></p-calendar>
+            <div *ngIf="submitted && f['publishDate'].errors" class="error-message">
+              Publish Date is required and should not be a future date.
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+
+      <div class="col-12  btn-container">
+        <p-button [loading]="processing" label={{title_btn_state}} styleClass="p-button-raised" class="me-3" (click)="add_update_book()"></p-button>
+        <p-button label="Cancel" styleClass="p-button-raised p-button-warning" class="me-3"
+          (click)="cancelbook()"></p-button>
+      </div>
+
+    </form>
+  </div>
+
+</div> 
+
+

@@ -1,1 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* @import '@angular/material/prebuilt-themes/indigo-pink.css'; */
+
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+::ng-deep .element.style {
+    background-color: none;
+    color:none;
+    cursor: none;
+    font-size: none !important;
+    font-weight: none !important;
+    position: none !important;
+    z-index: none !important;
+    top: none !important;
+    left: none !important;
+    display: none !important;
+    width: none !important;
+    padding: none !important;
+    opacity: none !important;
+    pointer-events: none !important;
+    visibility: none !important;
+
+}
+
