@@ -1,10 +1,8 @@
 
 <div class=" table-container flex">
     <div class=" addbtn">
-       
             <p-button label="Create" styleClass="p-button-success" (click)="createbook()" icon="pi pi-plus"></p-button>
       
-        
     </div>
     <div>
         <span class="p-input-icon-left mb-4 ms-2">
@@ -13,17 +11,18 @@
         </span>
         
 
-        <p-table [value]="book_list" #tb1 [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="10" [globalFilterFields]="['id', 'title', 'description', 'pageCount', 'excerpt', 'publishDate']">
+        <p-table [value]="book_list" #tb1 [paginator]="true" [rows]="10" [globalFilterFields]="['id', 'title', 'description', 'pageCount', 'excerpt', 'publishDate']"
+        styleClass="p-datatable-striped" [tableStyle]="{'min-width': '10rem'}">
             <ng-template pTemplate="header">
               <tr>
                 
-                <th pSortableColumn="id" style="width:20%">Id <p-sortIcon field="id"></p-sortIcon></th>
-                <th pSortableColumn="title" style="width:20%">Title<p-sortIcon field="title"></p-sortIcon></th>
-                <th pSortableColumn="description" style="width:20%">Description <p-sortIcon field="description"></p-sortIcon></th>
-                <th pSortableColumn="pageCount" style="width:20%">Page Count<p-sortIcon field="pageCount"></p-sortIcon></th>
-                <th pSortableColumn="excerpt" style="width:20%">Excerpt <p-sortIcon field="excerpt"></p-sortIcon></th>
-                <th pSortableColumn="publishDate" style="width:20%">Publish Date<p-sortIcon field="publishDate"></p-sortIcon></th>
-                <th>Action</th>
+                <th pSortableColumn="id"  style="width:10%">Id <p-sortIcon field="id"></p-sortIcon></th>
+                <th pSortableColumn="title"  style="width:10%">Title<p-sortIcon field="title"></p-sortIcon></th>
+                <th pSortableColumn="description" >Description <p-sortIcon field="description"></p-sortIcon></th>
+                <th pSortableColumn="pageCount"  style="width:10%">Page Count<p-sortIcon field="pageCount"></p-sortIcon></th>
+                <th pSortableColumn="excerpt">Excerpt <p-sortIcon field="excerpt"></p-sortIcon></th>
+                <th pSortableColumn="publishDate" >Publish Date<p-sortIcon field="publishDate"></p-sortIcon></th>
+                <th style="width:20%">Action</th>
             </tr>
             </ng-template>
             <ng-template pTemplate="body" let-book>
