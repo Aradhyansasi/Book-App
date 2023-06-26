@@ -1,48 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BooksService } from 'src/service/books.service';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { MessageService } from "primeng/api";
-import { map } from 'rxjs';
-import { AbstractControl, ValidatorFn } from '@angular/forms';
-
+import { map, Subscription } from 'rxjs';
+import { AbstractControl } from '@angular/forms';
+import { trim } from 'lodash';
 
 @Component({
   selector: 'app-book-create',
   templateUrl: './book-create.component.html',
   styleUrls: ['./book-create.component.css']
 })
-export class BookCreateComponent implements OnInit {
+export class BookCreateComponent implements OnInit, OnDestroy {
 
-  excerpt: any
-  description: any
-  title: any
-  pagecount!: number
-  publishDate!: Date;
 
   submitted: boolean = false;
   bookForm!: FormGroup;
-
   isAddMode: boolean = true;
 
   id = "";
   title_btn_state = "Add";
   processing = false;
-  form_data:any = {};
+  form_data: any = {};
+  bookSubscription = new Subscription
 
   constructor(
     private bookservice: BooksService,
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
     private messageService: MessageService,
-    private router :Router,
-  ) { }
-
-  
+    private router: Router,
+  ) {
+    this.id = this.router.getCurrentNavigation()?.extras.state?.['data'];
+    }
 
   ngOnInit(): void {
-
-   
 
     this.bookForm = this.formBuilder.group({
       title: [null, [Validators.required, Validators.maxLength(30)]],
@@ -52,35 +44,26 @@ export class BookCreateComponent implements OnInit {
       publishDate: [null, [Validators.required, this.validateDate]]
     });
 
-  
-    
-
-    this.id = this.route.snapshot.params["id"];
-    console.log('idddd: ', this.id)
     this.isAddMode = !this.id;
 
     if (!this.isAddMode) {
       this.title_btn_state = "Update";
-      console.log("hjgf", this.title_btn_state)
 
-    
+      this.bookSubscription.add(this.bookservice.getoneBook(this.id).pipe(
+        map((resp: any) => {
+      
+          this.bookForm.patchValue({
+            id: resp.id,
+            title: resp.title,
+            description: resp.description,
+            pageCount: resp.pageCount,
+            excerpt: resp.excerpt,
+            publishDate: new Date(resp.publishDate)
+          });
 
-    this.bookservice.getoneBook(this.id).pipe(
-      map((resp: any) => {
-        console.log("response:", resp);
-    
-        this.bookForm.patchValue({
-          id:resp.id,
-          title: resp.title,
-          description: resp.description,
-          pageCount: resp.pageCount,
-          excerpt: resp.excerpt,
-          publishDate: new Date(resp.publishDate)
-        });
-    
-        this.submitted = true;
-      })
-    ).subscribe();
+          this.submitted = true;
+        })
+      ).subscribe());
 
     } else {
       this.title_btn_state = "Add";
@@ -89,11 +72,15 @@ export class BookCreateComponent implements OnInit {
 
   }
 
+  ngOnDestroy(): void {
+    this.bookSubscription.unsubscribe()
+  }
+
 
   validateDate(control: AbstractControl): ValidationErrors | null {
     const selectedDate: Date = control.value;
     const currentDate: Date = new Date();
-  
+
     if (selectedDate > currentDate) {
       return { futureDate: true };
     }
@@ -104,48 +91,43 @@ export class BookCreateComponent implements OnInit {
     this.processing = true;
     this.submitted = true;
 
+    this.bookForm.controls['title'].setValue(trim(this.bookForm.controls['title'].value));
+    this.bookForm.controls['description'].setValue(trim(this.bookForm.controls['description'].value));
+    this.bookForm.controls['excerpt'].setValue(trim(this.bookForm.controls['excerpt'].value));
+
 
     if (this.bookForm.invalid) {
       this.processing = false;
       return;
     }
-    
-    
-    if ( this.id != null) {
-      console.log("edit")
 
-      this.bookservice.updateBook(this.bookForm.value,  this.id).subscribe(response => {
+    if (this.id != null) {
+      this.bookSubscription.add(this.bookservice.updateBook(this.bookForm.value, this.id).subscribe(response => {
         this.messageService.add({ key: 'bc', severity: 'success', summary: 'Success', detail: 'Book Updated successfully' });
-  
+
         this.processing = false;
-        console.log("update response: ", response)
-      
-  
+
       }
-       
+
+      ));
+
+    } else {
+      this.bookSubscription.add(
+        this.bookservice.createBook(this.bookForm.value).subscribe({
+          next: (response) => {
+            this.messageService.add({ key: 'bc', severity: 'success', summary: 'Success', detail: 'Book added successfully' });
+            this.processing = false;
+          },
+          error: (error) => {
+            this.messageService.add({ key: 'bc', severity: 'error', summary: 'Error', detail: 'An error occurred' });
+            this.processing = false;
+          }
+        })
       );
-
-    }else{
-      console.log("add");
-      
-
-    this.bookservice.createBook(this.bookForm.value).subscribe(response => {
-      this.messageService.add({key: 'bc', severity: 'success', summary: 'Success', detail: 'Book added successfully' });
-
-      this.processing = false;
-      console.log("create response: ", response);
-    },
-    error => {
-      this.messageService.add({key: 'bc', severity: 'error', summary: 'Error', detail: 'An error occurred' });
-      this.processing = false;
-      console.error("create error:", error);
     }
-  );
-   
   }
-}
 
-  cancelbook() { 
+  cancelbook() {
     this.router.navigate(["book/list"]);
   }
 

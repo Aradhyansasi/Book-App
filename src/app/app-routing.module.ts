@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
+import { PagenotfountComponent } from './pagenotfount/pagenotfount.component';
 
 const routes: Routes = [
 
@@ -17,6 +18,10 @@ const routes: Routes = [
             (m) => m.BookModule
           ),
       },
+      { 
+        path: '**', pathMatch: 'full', 
+        component: PagenotfountComponent
+     },
     ]
   }
 ];

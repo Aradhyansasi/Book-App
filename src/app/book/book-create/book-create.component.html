@@ -4,7 +4,7 @@
 <div class="col-12 main-container">
   <div class="card">
     <div>
-      <h1 class="book-title mt-4"> Add/Edit Book Details</h1>
+      <h1 class="book-title mt-4"> {{title_btn_state}} Book Details</h1>
      
     </div>
     <form [formGroup]="bookForm">
@@ -16,7 +16,7 @@
             <label htmlFor="title">Title</label>
             <input type="text" pInputText formControlName="title" [ngClass]="{
               'ng-invalid ng-dirty': submitted && f['title'].errors}"/>
-              <div *ngIf="submitted && f['title'].errors" class="error-message">
+              <div *ngIf="submitted && f['title'].errors" class="error-message error_color">
                 Title is required and should not exceed 30 characters.
               </div>
           </div>
@@ -25,7 +25,7 @@
             <label htmlFor="description">Description</label>
             <textarea rows="5" cols="30" pInputTextarea formControlName="description" [ngClass]="{
               'ng-invalid ng-dirty': submitted && f['description'].errors}"></textarea>
-              <div *ngIf="submitted && f['description'].errors" class="error-message">
+              <div *ngIf="submitted && f['description'].errors" class="error-message error_color" >
                 Description is required and should not exceed 50 characters.
               </div>
           </div>
@@ -36,7 +36,7 @@
             <label for="pageCount">Page Count</label>
             <p-inputNumber inputId="pageCount" formControlName="pageCount" [ngClass]="{
               'ng-invalid ng-dirty': submitted && f['pageCount'].errors}"> </p-inputNumber>
-              <div *ngIf="submitted && f['pageCount'].errors" class="error-message">
+              <div *ngIf="submitted && f['pageCount'].errors" class="error-message error_color">
                 Page Count is required and should be between 10 and 250.
               </div>
           </div>
@@ -45,7 +45,7 @@
             <label htmlFor="excerpt">Excerpt</label>
             <input type="text" pInputText formControlName="excerpt" [ngClass]="{
               'ng-invalid ng-dirty': submitted && f['excerpt'].errors}"/>
-              <div *ngIf="submitted && f['excerpt'].errors" class="error-message">
+              <div *ngIf="submitted && f['excerpt'].errors" class="error-message error_color">
                 Excerpt should not exceed 250 characters.
               </div>
           </div>
@@ -55,7 +55,7 @@
             <p-calendar formControlName="publishDate" [ngClass]="{
               'ng-invalid ng-dirty': submitted && f['publishDate'].errors
             }" dateFormat="yy-mm-dd'T'HH:MM:ss.l'Z'"></p-calendar>
-            <div *ngIf="submitted && f['publishDate'].errors" class="error-message">
+            <div *ngIf="submitted && f['publishDate'].errors" class="error-message error_color">
               Publish Date is required and should not be a future date.
             </div>
           </div>

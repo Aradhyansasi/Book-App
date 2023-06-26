@@ -1,0 +1,17 @@
+.grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+}
+
+.box {
+    text-align: center;
+   
+}
+
+.page_data{
+    color: red;
+}
+
